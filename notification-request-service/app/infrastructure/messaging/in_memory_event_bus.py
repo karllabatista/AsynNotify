@@ -12,9 +12,9 @@ class InMemoryEventBus(EventBus):
     def __init__(self):
         self.queue:Queue = Queue()
 
-    def publish(self,event:NotificationRequest)-> None:
+    def publish(self,event:NotificationRequest)-> bool:
         
-        success = False
+       
         for attempt in range(1,4):
             try:
                 event_to_queue ={
@@ -24,13 +24,13 @@ class InMemoryEventBus(EventBus):
 
                 self.queue.put_nowait(event_to_queue)
                 logger.info(f"[Attempt {attempt}]:Published event to queue: {event_to_queue}")
-                success = True
-                break
+                return True
 
             except Full :
                logger.warning(f"[Attempt {attempt}] Queue full. Retrying...")
                time.sleep(0.1 * attempt)
         
-        if not success:
+      
             logger.error("All retries failed")
+            return False
             
