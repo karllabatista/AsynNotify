@@ -31,6 +31,6 @@ class InMemoryEventBus(EventBus):
                time.sleep(0.1 * attempt)
         
       
-            logger.error("All retries failed")
-            return False
+        logger.error("All retries failed")
+        return False
             
