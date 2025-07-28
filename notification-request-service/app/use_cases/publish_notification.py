@@ -8,8 +8,6 @@ class PublishNotificationUseCase:
 
     def execute(self,event:NotificationRequest) -> None:
 
-        try:
-            self.event_bus.publish(event)
-            
-        except Exception :
+        success = self.event_bus.publish(event)
+        if not success:
             raise NotificationPublishError("Failed to publish event")
