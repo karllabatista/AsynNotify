@@ -7,7 +7,7 @@ import time
 logging.basicConfig(level=logging.info)
 logger = logging.getLogger(__name__)
 
-class InMemoryEventBus(EventBus):
+class InMemoryQueueEventBus(EventBus):
     
     def __init__(self):
         self.queue:Queue = Queue()
