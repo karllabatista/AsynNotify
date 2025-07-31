@@ -5,7 +5,7 @@
 Você está desenvolvendo um sistema distribuído para enviar notificações a usuários em diferentes canais (email, SMS, push) de forma desacoplada e assíncrona.
 
 ### Arquitetura de Microserviços
-🔹 1. notification-request-service
+#### 1. notification-request-service
 Responsável por receber pedidos de notificação e publicar um evento.
 
 Endpoints:
@@ -26,7 +26,7 @@ Comportamento:
 
 - Publica um evento NotificationRequested
 
-🔹 2. notification-dispatcher-service
+#### 2. notification-dispatcher-service
 Escuta o evento NotificationRequested e despacha a notificação pelo canal solicitado.
 
 Comportamento:
