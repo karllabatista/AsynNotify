@@ -1,4 +1,4 @@
-from app.domain.messaging.event_bus import EventBus
+from app.domain.ports.event_bus import EventBus
 from queue import Queue,Full
 from app.domain.entities.notification_request import NotificationRequest
 from app.domain.events.notification_event import NotificationEvent
