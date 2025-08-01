@@ -10,8 +10,8 @@ logger = logging.getLogger(__name__)
 
 class InMemoryQueueEventBus(EventBus):
     
-    def __init__(self):
-        self.queue:Queue = Queue()
+    def __init__(self,maxsize:int=0):
+        self.queue:Queue = Queue(maxsize=maxsize)
 
     def publish(self,notification:NotificationRequest,request_id:str)-> bool:
     
