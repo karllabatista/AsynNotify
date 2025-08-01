@@ -4,7 +4,6 @@ from app.domain.entities.notification_request import NotificationRequest
 from app.domain.events.notification_event import NotificationEvent
 from app.domain.exceptions.notification_publish_error import NotificationPublishError
 import logging
-import time
 
 logging.basicConfig(level=logging.info)
 logger = logging.getLogger(__name__)
