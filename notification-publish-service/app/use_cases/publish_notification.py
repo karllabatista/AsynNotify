@@ -1,4 +1,4 @@
-from app.domain.messaging.event_bus import EventBus
+from app.domain.ports.event_bus import EventBus
 from app.domain.exceptions.notification_publish_error import NotificationPublishError
 from app.domain.entities.notification_request import NotificationRequest
 import logging
