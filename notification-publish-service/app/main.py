@@ -29,10 +29,10 @@ def get_publish_notification_use_case() -> PublishNotificationUseCase:
           responses={  
             400: {"model": ErrorResponse, "description": "Validation Error"},
             500: {"model": ErrorResponse, "description": "Internal Error"},})
-def send_notification(notification_input: NotificationInput,
+def publish_notification(notification_input: NotificationInput,
                       notification_use_case:PublishNotificationUseCase = Depends(get_publish_notification_use_case)):
     try:
-        logger.info("Received request ..")
+        logger.info(f"Received notification request:user_id={notification_input.user_id},channel={notification_input.channel}")
         
         notification_req = NotificationRequest(user_id=notification_input.user_id,
                                           channel=notification_input.channel,
