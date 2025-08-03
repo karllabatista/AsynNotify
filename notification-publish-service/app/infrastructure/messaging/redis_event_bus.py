@@ -40,4 +40,5 @@ class RedisEventBus(EventBus):
             raise NotificationPublishError("Could not connect to Redis") from redis_error
         
         except Exception as error:
-            logger.exception(f"Uexpected error while publishing event:{error}")     
+            logger.exception(f"[PUBLISH] Unexpected error while publishing event: {error}")
+            raise NotificationPublishError("Failed to publish event") from error
