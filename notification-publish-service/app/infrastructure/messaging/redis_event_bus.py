@@ -7,7 +7,6 @@ import logging
 import json
 import redis
 
-logging.basicConfig(level=logging.info)
 logger = logging.getLogger(__name__)
 
 QUEUE_NAME = "notifications"
