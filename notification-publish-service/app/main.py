@@ -41,7 +41,7 @@ def publish_notification(notification_input: NotificationInput,
         notification_use_case.execute(notification_req)
         return NotificationResponse(message="Notification sent successfully")
     except NotificationPublishError as notification_error:
-        logger.exception(f"Failed to publish notification:{notification_error}")
+        logger.error(f"Failed to publish notification:{notification_error}")
         return JSONResponse(status_code=500,content=ErrorResponse(detail=notification_error.message).model_dump())
     except Exception as error:
         logger.exception(f"Failed to publish notification:{error}")
