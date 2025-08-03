@@ -8,6 +8,8 @@ import json
 
 logging.basicConfig(level=logging.info)
 logger = logging.getLogger(__name__)
+
+QUEUE_NAME = "notifications"
 class RedisEventBus(EventBus):
     
     def __init__(self,redis):
@@ -25,8 +27,9 @@ class RedisEventBus(EventBus):
                 raise TypeError("Expected NotificationRequest instance")
             
             event= NotificationEvent(notification)
-            self.queue_redis.rpush("notifications",json.dumps(event.to_dict()))
-            logger.info("A new event was added to the queue ")
+            payload = json.dumps(event.to_dict())
+            self.queue_redis.rpush(Queue,payload)
+            logger.info(f"[PUBLISH] Event pushed to queue '{QUEUE_NAME}' | user_id={notification.user_id}")
             return True
         
         except Exception as error:
