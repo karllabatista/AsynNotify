@@ -1,8 +1,8 @@
-from app.domain.ports.event_bus import EventBus
+from domain.ports.event_bus import EventBus
 from queue import Queue,Full
-from app.domain.entities.notification_request import NotificationRequest
-from app.domain.events.notification_event import NotificationEvent
-from app.domain.exceptions.notification_publish_error import NotificationPublishError
+from domain.entities.notification_request import NotificationRequest
+from domain.events.notification_event import NotificationEvent
+from domain.exceptions.notification_publish_error import NotificationPublishError
 import logging
 
 logging.basicConfig(level=logging.info)
@@ -13,13 +13,13 @@ class InMemoryQueueEventBus(EventBus):
     def __init__(self,maxsize:int=0):
         self.queue:Queue = Queue(maxsize=maxsize)
 
-    def publish(self,notification:NotificationRequest,request_id:str)-> bool:
+    def publish(self,notification:NotificationRequest,request_id:str=None)-> bool:
     
         try:
             if not isinstance(notification,NotificationRequest):
                 raise TypeError("Expected NotificationRequest instance")
             
-            event= NotificationEvent(notification,request_id)
+            event= NotificationEvent(notification)
             self.queue.put_nowait(event.to_dict())
             logger.info("A new event was added to the queue ")
             return True
