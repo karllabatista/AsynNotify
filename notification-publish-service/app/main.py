@@ -14,14 +14,15 @@ logging.basicConfig(level=logging.info)
 logger = logging.getLogger(__name__)
 app = FastAPI()
 
+event_bus = InMemoryQueueEventBus() # shared queue
+
 @app.get("/desempregada")
 def hello_world():
 
     return {"message":"bosta de vida"}
 def get_publish_notification_use_case() -> PublishNotificationUseCase:
-    event_bus = InMemoryQueueEventBus()
-    publish_notification_use_case = PublishNotificationUseCase(event_bus)
-    return publish_notification_use_case
+   
+    return PublishNotificationUseCase(event_bus)
 
 @app.post("/notifications",
           status_code=status.HTTP_200_OK,
