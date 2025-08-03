@@ -1,5 +1,4 @@
 from domain.ports.event_bus import EventBus
-from queue import Queue,Full
 from domain.entities.notification_request import NotificationRequest
 from domain.events.notification_event import NotificationEvent
 from domain.exceptions.notification_publish_error import NotificationPublishError
@@ -28,7 +27,7 @@ class RedisEventBus(EventBus):
             
             event= NotificationEvent(notification)
             payload = json.dumps(event.to_dict())
-            self.queue_redis.rpush(Queue,payload)
+            self.queue_redis.rpush(QUEUE_NAME,payload)
             logger.info(f"[PUBLISH] Event pushed to queue '{QUEUE_NAME}' | user_id={notification.user_id}")
             return True
         
