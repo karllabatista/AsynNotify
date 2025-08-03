@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException,Depends
+from fastapi.responses import JSONResponse
 from starlette import status
 from interface.schemas.notification_input import NotificationInput
 from interface.schemas.notification_response import NotificationResponse
@@ -6,6 +7,7 @@ from interface.schemas.error_response import ErrorResponse
 from use_cases.publish_notification import PublishNotificationUseCase
 from domain.entities.notification_request import NotificationRequest
 from infrastructure.messaging.in_memory_event_bus import InMemoryQueueEventBus
+from domain.exceptions.notification_publish_error import NotificationPublishError
 import logging
 
 logging.basicConfig(level=logging.info)
@@ -37,7 +39,9 @@ def send_notification(notification_input: NotificationInput,
         
         notification_use_case.execute(notification_req)
         return NotificationResponse(message="Notification sent successfully")
-    
+    except NotificationPublishError as notification_error:
+        logger.exception(f"Failed to publish notifdication:{notification_error}")
+        return JSONResponse(status_code=500,content=ErrorResponse(detail=notification_error.message).model_dump())
     except Exception as error:
         logger.exception(f"Failed to publish notifdication:{error}")
         raise HTTPException(status_code=500,detail="Internal error: Failed to publish notifdication")
