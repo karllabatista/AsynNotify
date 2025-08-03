@@ -44,4 +44,4 @@ def send_notification(notification_input: NotificationInput,
         return JSONResponse(status_code=500,content=ErrorResponse(detail=notification_error.message).model_dump())
     except Exception as error:
         logger.exception(f"Failed to publish notification:{error}")
-        raise HTTPException(status_code=500,detail="Internal error: Failed to publish notifdication")
+        raise HTTPException(status_code=500,detail="Internal error: Failed to publish notification")
