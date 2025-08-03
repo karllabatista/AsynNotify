@@ -18,7 +18,7 @@ app = FastAPI()
 def hello_world():
 
     return {"message":"bosta de vida"}
-def create_notification_use_case():
+def get_publish_notification_use_case() -> PublishNotificationUseCase:
     event_bus = InMemoryQueueEventBus()
     publish_notification_use_case = PublishNotificationUseCase(event_bus)
     return publish_notification_use_case
@@ -29,7 +29,7 @@ def create_notification_use_case():
             400: {"model": ErrorResponse, "description": "Validation Error"},
             500: {"model": ErrorResponse, "description": "Internal Error"},})
 def send_notification(notification_input: NotificationInput,
-                      notification_use_case:PublishNotificationUseCase = Depends(create_notification_use_case)):
+                      notification_use_case:PublishNotificationUseCase = Depends(get_publish_notification_use_case)):
     try:
         logger.info("Received request ..")
         
