@@ -16,10 +16,10 @@ app = FastAPI()
 
 event_bus = InMemoryQueueEventBus() # shared queue
 
-@app.get("/desempregada")
+@app.get("/healthy")
 def hello_world():
 
-    return {"message":"bosta de vida"}
+    return {"message":"server is working .."}
 def get_publish_notification_use_case() -> PublishNotificationUseCase:
    
     return PublishNotificationUseCase(event_bus)
