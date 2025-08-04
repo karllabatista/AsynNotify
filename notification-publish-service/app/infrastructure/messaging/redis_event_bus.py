@@ -11,12 +11,12 @@ logger = logging.getLogger(__name__)
 QUEUE_NAME = "notifications"
 class RedisEventBus(EventBus):
     
-    def __init__(self,redis):
+    def __init__(self,redis_client):
 
         if not redis:
             raise ValueError("Redis is unavailable!") 
      
-        self.queue_redis = redis
+        self.queue_redis = redis_client
         
 
     def publish(self,notification:NotificationRequest,request_id:str=None)-> bool:
