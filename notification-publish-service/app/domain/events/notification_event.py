@@ -1,6 +1,6 @@
 from datetime import datetime,timezone
 from uuid import uuid4
-from domain.entities.notification_request import NotificationRequest
+from app.domain.entities.notification_request import NotificationRequest
 class NotificationEvent:
     
     def __init__(self,notification:NotificationRequest,request_id:str=None):

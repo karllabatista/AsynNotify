@@ -1,6 +1,6 @@
-from domain.ports.event_bus import EventBus
-from domain.exceptions.notification_publish_error import NotificationPublishError
-from domain.entities.notification_request import NotificationRequest
+from app.domain.ports.event_bus import EventBus
+from app.domain.exceptions.notification_publish_error import NotificationPublishError
+from app.domain.entities.notification_request import NotificationRequest
 import logging
 
 logging.basicConfig(level=logging.INFO)

@@ -1,7 +1,7 @@
-from domain.ports.event_bus import EventBus
-from domain.entities.notification_request import NotificationRequest
-from domain.events.notification_event import NotificationEvent
-from domain.exceptions.notification_publish_error import NotificationPublishError
+from app.domain.ports.event_bus import EventBus
+from app.domain.entities.notification_request import NotificationRequest
+from app.domain.events.notification_event import NotificationEvent
+from app.domain.exceptions.notification_publish_error import NotificationPublishError
 import logging
 import json
 import redis

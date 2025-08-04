@@ -1,14 +1,14 @@
 from fastapi import APIRouter, HTTPException,Depends
 from fastapi.responses import JSONResponse
 from starlette import status
-from interface.schemas.notification_input import NotificationInput
-from interface.schemas.notification_response import NotificationResponse
-from interface.schemas.error_response import ErrorResponse
-from use_cases.publish_notification import PublishNotificationUseCase
-from domain.entities.notification_request import NotificationRequest
-from infrastructure.messaging.redis_event_bus import RedisEventBus
-from domain.exceptions.notification_publish_error import NotificationPublishError
-from infrastructure.redis_client import get_redis_connection
+from app.interface.schemas.notification_input import NotificationInput
+from app.interface.schemas.notification_response import NotificationResponse
+from app.interface.schemas.error_response import ErrorResponse
+from app.use_cases.publish_notification import PublishNotificationUseCase
+from app.domain.entities.notification_request import NotificationRequest
+from app.infrastructure.messaging.redis_event_bus import RedisEventBus
+from app.domain.exceptions.notification_publish_error import NotificationPublishError
+from app.infrastructure.redis_client import get_redis_connection
 import logging
 
 
@@ -45,7 +45,7 @@ def publish_notification(notification_input: NotificationInput,
         return NotificationResponse(message="Notification sent successfully")
     except NotificationPublishError as notification_error:
         logger.error(f"Failed to publish notification:{notification_error}")
-        return JSONResponse(status_code=500,content=ErrorResponse(detail=notification_error.message).model_dump())
+        return JSONResponse(status_code=500,content="Failed to publish notification")
     except Exception as error:
         logger.exception(f"Failed to publish notification:{error}")
         raise HTTPException(status_code=500,detail="Internal error: Failed to publish notification")
