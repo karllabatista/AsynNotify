@@ -2,6 +2,7 @@ from app.domain.ports.event_bus import EventBus
 from app.domain.entities.notification_request import NotificationRequest
 from app.domain.events.notification_event import NotificationEvent
 from app.domain.exceptions.notification_publish_error import NotificationPublishError
+from app.domain.exceptions.server_unavailable_error import ServerUnavailable
 import logging
 import json
 import redis
@@ -38,7 +39,7 @@ class RedisEventBus(EventBus):
             raise NotificationPublishError("Invalid event format") from validation_error
         except redis.exceptions.ConnectionError as redis_error:
             logger.exception("Redis connection failed")
-            raise NotificationPublishError("Could not connect to Redis") from redis_error
+            raise ServerUnavailable("Could not connect to Redis") from redis_error
         
         except Exception as error:
             logger.exception(f"[PUBLISH] Unexpected error while publishing event: {error}")

@@ -8,6 +8,7 @@ from app.use_cases.publish_notification import PublishNotificationUseCase
 from app.domain.entities.notification_request import NotificationRequest
 from app.infrastructure.messaging.redis_event_bus import RedisEventBus
 from app.domain.exceptions.notification_publish_error import NotificationPublishError
+from app.domain.exceptions.server_unavailable_error import ServerUnavailable
 from app.infrastructure.redis_client import get_redis_connection
 import logging
 
@@ -43,9 +44,16 @@ def publish_notification(notification_input: NotificationInput,
         
         notification_use_case.execute(notification_req)
         return NotificationResponse(message="Notification sent successfully")
+    except ServerUnavailable as server_error:
+         logger.error(f"Failed to publish notification:{server_error}")
+         return JSONResponse(
+            status_code=503,
+            content=ErrorResponse(detail="Service temporarily unavailable: Redis connection error").model_dump()
+        )
     except NotificationPublishError as notification_error:
         logger.error(f"Failed to publish notification:{notification_error}")
         return JSONResponse(status_code=500,content="Failed to publish notification")
+    
     except Exception as error:
         logger.exception(f"Failed to publish notification:{error}")
         raise HTTPException(status_code=500,detail="Internal error: Failed to publish notification")
