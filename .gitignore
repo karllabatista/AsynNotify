@@ -2,3 +2,4 @@ notireq-env
 __pycache__
 notification-publish-service/noti-env
 .pytest_cache
+.env
