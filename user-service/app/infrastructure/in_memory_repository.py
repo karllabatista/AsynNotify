@@ -35,6 +35,7 @@ class InMemoryRepository(UserRepository):
         try:
 
             if not user_id:
+                logger.warning("The user_id can`t be none")
                 raise ValueError(" The user_id can`t be none")
             
             logger.info(f"[USERSERVICE] Find user {user_id} .. ")
