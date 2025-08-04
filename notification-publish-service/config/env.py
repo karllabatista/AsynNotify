@@ -9,3 +9,6 @@ def get_redis_host():
 
 def get_redis_port():
     return int(os.getenv("REDIS_PORT", 6379))
+
+def get_queue_name():
+    return os.getenv("QUEUE_NAME","notifications")

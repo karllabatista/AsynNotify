@@ -5,10 +5,12 @@ from domain.exceptions.notification_publish_error import NotificationPublishErro
 import logging
 import json
 import redis
+from config.env import get_queue_name
 
 logger = logging.getLogger(__name__)
 
-QUEUE_NAME = "notifications"
+QUEUE_NAME = get_queue_name()
+
 class RedisEventBus(EventBus):
     
     def __init__(self,redis_client):
