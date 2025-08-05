@@ -3,8 +3,17 @@ from uuid import uuid4
 from app.domain.entities.notification_request import NotificationRequest
 class NotificationEvent:
     
-    def __init__(self,notification:NotificationRequest,request_id:str=None):
-        self.notification = notification.to_dict()
+    def __init__(self,
+                 user_id:str,
+                 message:str,
+                 channel:str,
+                 destination:str,
+                 request_id:str = None):
+        
+        self.user_id= user_id
+        self.message = message
+        self.channel= channel,
+        self.destination = destination
         self.event_type = "NotificationRequested"
         self.request_id= request_id or str(uuid4())
         self.metadata = {
@@ -15,7 +24,12 @@ class NotificationEvent:
     def to_dict(self):
         return{
               "event_type": self.event_type,
-              "data":self.notification,
+              "data":{
+                "user_id":self.user_id,
+                "message":self.message,
+                "channel" :self.channel,
+                "destination":self.destination                  
+              },
               "metadata":self.metadata
                    
               }
