@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
-def config_use_case():
+def config_use_case()-> GetContactInfoUseCase:
     repository = InMemoryRepository()
     return GetContactInfoUseCase(repository)
 
@@ -23,7 +23,7 @@ def get_user_contact_info(
       
         contact = get_user_contact_info_use_case.execute(user_id)
         return {"contact_info":contact.to_dict()}
-        
+
     except UserNotFoundException:
         logger.warning(f"User not found: {user_id}")
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail={"message": "user not found"})
