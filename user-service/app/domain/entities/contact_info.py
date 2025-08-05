@@ -5,4 +5,10 @@ class ContactInfo:
         self.sms = sms
         self.prefered_channel=prefered_channel
   
-    
+    def to_dict(self):
+
+        return {
+            "email":self.email,
+            "sms":self.sms,
+            "prefered_channel":self.prefered_channel
+        }
