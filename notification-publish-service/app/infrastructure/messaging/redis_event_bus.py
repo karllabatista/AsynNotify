@@ -3,6 +3,7 @@ from app.domain.entities.notification_request import NotificationRequest
 from app.domain.events.notification_event import NotificationEvent
 from app.domain.exceptions.notification_publish_error import NotificationPublishError
 from app.domain.exceptions.server_unavailable_error import ServerUnavailable
+from app.domain.events.notification_event import NotificationEvent
 import logging
 import json
 import redis
@@ -22,16 +23,15 @@ class RedisEventBus(EventBus):
         self.queue_redis = redis_client
         
 
-    def publish(self,notification:NotificationRequest,request_id:str=None)-> bool:
+    def publish(self,event:NotificationEvent)-> bool:
     
         try:
-            if not isinstance(notification,NotificationRequest):
+            if not isinstance(event,NotificationEvent):
                 raise TypeError("Expected NotificationRequest instance")
             
-            event= NotificationEvent(notification)
             payload = json.dumps(event.to_dict())
             self.queue_redis.rpush(QUEUE_NAME,payload)
-            logger.info(f"[PUBLISH] Event pushed to queue '{QUEUE_NAME}' | user_id={notification.user_id}")
+            logger.info(f"[PUBLISH] Event pushed to queue '{QUEUE_NAME}' | user_id={event.user_id}")
             return True
         
         except (TypeError, ValueError, json.JSONDecodeError) as validation_error:
