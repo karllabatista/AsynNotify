@@ -12,3 +12,7 @@ def get_redis_port():
 
 def get_queue_name():
     return os.getenv("QUEUE_NAME","notifications")
+
+def get_base_url_user_service():
+
+    return os.getenv("BASE_URL_SERVICE_USER","http://127.0.0.1:8000")
