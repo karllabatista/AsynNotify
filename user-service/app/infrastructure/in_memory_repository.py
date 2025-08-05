@@ -56,5 +56,5 @@ class InMemoryRepository(UserRepository):
             raise
         except Exception as error:
             logger.exception(f"[USERSERVICE] Failed while searching for user with {user_id}:{error}")
-            raise ContactInfoException(f"Inernal error while searching for user with {user_id}") from error
+            raise ContactInfoException(f"Internal error while searching for user with {user_id}") from error
 
