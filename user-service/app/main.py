@@ -2,6 +2,7 @@ from fastapi import FastAPI,Path,Depends,HTTPException
 from app.use_cases.get_contact_info_use_case import GetContactInfoUseCase
 from app.infrastructure.in_memory_repository import InMemoryRepository
 from app.domain.exception.user_not_found_exception import UserNotFoundException
+from app.interface.schemas.contact_info_output import ContactInfoOutput
 from starlette import status
 import logging
 
@@ -14,7 +15,7 @@ def config_use_case()-> GetContactInfoUseCase:
     repository = InMemoryRepository()
     return GetContactInfoUseCase(repository)
 
-@app.get("/users/{user_id}/contact-info",status_code=status.HTTP_200_OK)
+@app.get("/users/{user_id}/contact-info",status_code=status.HTTP_200_OK,response_model=ContactInfoOutput)
 def get_user_contact_info(
     user_id: str = Path(..., min_length=4, max_length=10),
     get_user_contact_info_use_case:GetContactInfoUseCase = Depends(config_use_case)
@@ -22,7 +23,8 @@ def get_user_contact_info(
     try:
       
         contact = get_user_contact_info_use_case.execute(user_id)
-        return {"contact_info":contact.to_dict()}
+        
+        return ContactInfoOutput.from_entity(contact)
 
     except UserNotFoundException:
         logger.warning(f"User not found: {user_id}")
