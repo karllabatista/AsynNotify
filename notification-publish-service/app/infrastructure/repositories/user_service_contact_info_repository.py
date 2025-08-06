@@ -3,6 +3,7 @@ from app.domain.entities.contact_info import ContactInfo
 from app.domain.exceptions.external_server_exception import ExternalServiceException
 from app.domain.exceptions.user_not_found_exception import UserNotFound
 import requests
+from requests.exceptions import RequestException
 import logging
 
 logger = logging.getLogger(__name__)
@@ -38,6 +39,10 @@ class UserServiceContactIndoRepository(UserContactInfoRepository):
             return ContactInfo(email=data["email"],
                             sms=data["sms"],
                             preferred_channel=data["prefered_channel"])
+        except RequestException as e:
+            logger.error(f"Request to user service failed: {e}")
+            raise ExternalServiceException("Could not reach user service")
+
         except UserNotFound:
             raise
         except ExternalServiceException:
