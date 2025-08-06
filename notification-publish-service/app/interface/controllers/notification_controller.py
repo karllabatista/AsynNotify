@@ -10,8 +10,11 @@ from app.infrastructure.messaging.redis_event_bus import RedisEventBus
 from app.domain.exceptions.notification_publish_error import NotificationPublishError
 from app.domain.exceptions.server_unavailable_error import ServerUnavailable
 from app.infrastructure.redis_client import get_redis_connection
+from app.infrastructure.repositories.user_service_contact_info_repository import UserServiceContactInfoRepository
 import logging
+from config.env import get_base_url_user_service
 
+BASE_URL = get_base_url_user_service()
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +29,9 @@ def hello_world():
 def get_publish_notification_use_case() -> PublishNotificationUseCase:
     redis_client = get_redis_connection()
     event_bus = RedisEventBus(redis_client)
-    return PublishNotificationUseCase(event_bus)
+
+    user_contact_info_repository = UserServiceContactInfoRepository(BASE_URL)
+    return PublishNotificationUseCase(event_bus,user_contact_info_repository)
 
 @router.post("/notifications",
           status_code=status.HTTP_200_OK,
@@ -43,6 +48,7 @@ def publish_notification(notification_input: NotificationInput,
                                           message=notification_input.message)
         
         notification_use_case.execute(notification_req)
+
         return NotificationResponse(message="Notification sent successfully")
     except ServerUnavailable as server_error:
          logger.error(f"Failed to publish notification:{server_error}")
