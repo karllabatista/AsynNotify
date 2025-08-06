@@ -11,16 +11,17 @@ logger = logging.getLogger(__name__)
 
 class UserServiceContactInfoRepository(UserContactInfoRepository):
 
-    def __init__(self,base_url:str):
+    def __init__(self,base_url:str,http_client=requests):
         
         self.base_url = base_url
+        self.http_client = http_client
 
     def get_contact_info_by_user_id(self,user_id:str) ->ContactInfo:
         
         try:
         
             endpoint = f"{self.base_url}/users/{user_id}/contact-info"
-            result = requests.get(endpoint,timeout=5)
+            result = self.http_client.get(endpoint,timeout=5)
 
             if result.status_code == 404:
                 raise UserNotFound ("User not found")
