@@ -31,14 +31,14 @@ class UserServiceContactIndoRepository(UserContactInfoRepository):
             
             data = result.json()
 
-            required_fields = ["email","sms","prefered_channel"]
+            required_fields = ["email","sms","preferred_channel"]
 
             if not all(field in data for field in required_fields):
                 raise ExternalServiceException("Incomplete user data from user service")
 
             return ContactInfo(email=data["email"],
                             sms=data["sms"],
-                            preferred_channel=data["prefered_channel"])
+                            preferred_channel=data["preferred_channel"])
         except RequestException as e:
             logger.error(f"Request to user service failed: {e}")
             raise ExternalServiceException("Could not reach user service")
