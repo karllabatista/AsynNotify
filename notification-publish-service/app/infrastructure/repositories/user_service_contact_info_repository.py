@@ -9,7 +9,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class UserServiceContactIndoRepository(UserContactInfoRepository):
+class UserServiceContactInfoRepository(UserContactInfoRepository):
 
     def __init__(self,base_url:str):
         
