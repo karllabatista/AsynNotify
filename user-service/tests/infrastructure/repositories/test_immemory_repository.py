@@ -10,7 +10,7 @@ def test_get_user_by_id():
                 {
                     "email":"mockeruser@gmail.com",
                     "sms":"+55000000000",
-                    "prefered_channel":"email"
+                    "preferred_channel":"email"
                 }
         
         }
@@ -23,6 +23,6 @@ def test_get_user_by_id():
         assert isinstance(contact,ContactInfo)
         assert contact.email == "mockeruser@gmail.com"
         assert contact.sms == "+55000000000"
-        assert contact.prefered_channel == "email"
+        assert contact.preferred_channel == "email"
     
 
