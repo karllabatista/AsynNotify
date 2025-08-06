@@ -26,20 +26,22 @@ class PublishNotificationUseCase:
                 raise UserNotFound("[PUBLISH SERVICE] User not found")
             
             destination = user_contact.preferred_channel
-            
+        except UserNotFound:
+            raise   
 
-            event = NotificationEvent(notification.user_id,
+        event = NotificationEvent(notification.user_id,
                                     notification.message,
                                     notification.channel,
                                     destination)
-
+        
+        try:
             success = self.event_bus.publish(event)
             if not success:
                 logger.error(f" Failed to publish notification")
                 raise NotificationPublishError("Failed to publish event")
          
             logger.info("Notication published with successful.")
-        except UserNotFound:
+        except NotificationPublishError:
             raise
         except Exception as e:
             logger.exception(f"[PUBLISH SERVICE] Unexpected error while publish event:{e}")
