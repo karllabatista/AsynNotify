@@ -11,6 +11,8 @@ from app.domain.exceptions.notification_publish_error import NotificationPublish
 from app.domain.exceptions.server_unavailable_error import ServerUnavailable
 from app.infrastructure.redis_client import get_redis_connection
 from app.infrastructure.repositories.user_service_contact_info_repository import UserServiceContactInfoRepository
+from app.domain.exceptions.user_not_found_exception import UserNotFound
+from app.domain.exceptions.external_server_exception import ExternalServiceException
 import logging
 from config.env import get_base_url_user_service
 
@@ -36,8 +38,10 @@ def get_publish_notification_use_case() -> PublishNotificationUseCase:
 @router.post("/notifications",
           status_code=status.HTTP_200_OK,
           responses={  
-            400: {"model": ErrorResponse, "description": "Validation Error"},
-            500: {"model": ErrorResponse, "description": "Internal Error"},})
+                400: {"model": ErrorResponse, "description": "Validation Error"},
+                404: {"model": ErrorResponse, "description": "User not found"},
+                500: {"model": ErrorResponse, "description": "Internal Server Error"},
+                503: {"model": ErrorResponse, "description": "External Service Unavailable"},})
 def publish_notification(notification_input: NotificationInput,
                       notification_use_case:PublishNotificationUseCase = Depends(get_publish_notification_use_case)):
     try:
@@ -50,15 +54,27 @@ def publish_notification(notification_input: NotificationInput,
         notification_use_case.execute(notification_req)
 
         return NotificationResponse(message="Notification sent successfully")
+    except UserNotFound:
+        logger.warning(f"[INTERFACE] User not found: {notification_input.user_id}")
+        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND,
+                            content=ErrorResponse(detail="User not found").model_dump())
+    except ExternalServiceException as external_error:
+        logger.error(f"[INTERFACE]  User Service is unavailable:{external_error}")
+        return JSONResponse(status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                            content=ErrorResponse(detail="User Service is is temporaril unavailable").model_dump())
+
+    
     except ServerUnavailable as server_error:
-         logger.error(f"Failed to publish notification:{server_error}")
+         logger.error(f"[INTERFACE]  Failed to publish notification:{server_error}")
          return JSONResponse(
-            status_code=503,
-            content=ErrorResponse(detail="Service temporarily unavailable: Redis connection error").model_dump()
-        )
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            content=ErrorResponse(detail="Service temporarily unavailable: Redis connection error").model_dump())
+    
     except NotificationPublishError as notification_error:
-        logger.error(f"Failed to publish notification:{notification_error}")
-        return JSONResponse(status_code=500,content="Failed to publish notification")
+        logger.error("[INTERFACE] Failed to publish notification to queue")
+        return JSONResponse(
+            status_code=500,
+            content=ErrorResponse(detail="Failed to publish notification").model_dump())
     
     except Exception as error:
         logger.exception(f"Failed to publish notification:{error}")
