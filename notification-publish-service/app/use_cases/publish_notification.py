@@ -19,22 +19,15 @@ class PublishNotificationUseCase:
         logger.info(f"Trying to publish notification ...")
 
         try:
-
-            user_contact = user_contact_info_repository.get_contactc_info(notification.user_id)
+            # TODO push notification
+            user_contact = user_contact_info_repository.get_contact_info_by_user_id(notification.user_id)
 
             if not user_contact:
                 raise UserNotFound("[PUBLISH SERVICE] User not found")
             
-            if notification.channel == "email":
-                destination = user_contact.email
-
-            elif notification.channel == "sms":
-                destination = user_contact.sms
-
-            elif notification.channel == "push":
-                destination = user_contact.push
-
+            destination = user_contact.preferred_channel
             
+
             event = NotificationEvent(notification.user_id,
                                     notification.message,
                                     notification.channel,
@@ -42,7 +35,7 @@ class PublishNotificationUseCase:
 
             success = self.event_bus.publish(event)
             if not success:
-                logger.error(f" Failes dto publish notification")
+                logger.error(f" Failed to publish notification")
                 raise NotificationPublishError("Failed to publish event")
          
             logger.info("Notication published with successful.")
