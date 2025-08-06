@@ -11,16 +11,18 @@ logger = logging.getLogger(__name__)
 
 class PublishNotificationUseCase:
 
-    def __init__(self,event_bus:EventBus):
+    def __init__(self,
+                event_bus:EventBus,
+                user_repository:UserContactInfoRepository):
         self.event_bus = event_bus
+        self.user_repository = user_repository
 
-    def execute(self,notification:NotificationRequest,
-                user_contact_info_repository: UserContactInfoRepository) -> None:
+    def execute(self,notification:NotificationRequest) -> None:
         logger.info(f"Trying to publish notification ...")
 
         try:
             # TODO push notification
-            user_contact = user_contact_info_repository.get_contact_info_by_user_id(notification.user_id)
+            user_contact =  self.user_repository.get_contact_info_by_user_id(notification.user_id)
 
             if not user_contact:
                 raise UserNotFound("[PUBLISH SERVICE] User not found")
