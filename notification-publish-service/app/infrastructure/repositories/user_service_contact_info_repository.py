@@ -43,5 +43,5 @@ class UserServiceContactIndoRepository(UserContactInfoRepository):
         except ExternalServiceException:
             raise
         except Exception as e:
-            logger.exception(f"An unexpect error in call to user service:{e}")
+            logger.exception(f"An unexpected error in calling to user service:{e}")
             raise
