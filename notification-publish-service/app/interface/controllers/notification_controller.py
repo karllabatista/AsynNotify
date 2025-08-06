@@ -71,7 +71,7 @@ def publish_notification(notification_input: NotificationInput,
             content=ErrorResponse(detail="Service temporarily unavailable: Redis connection error").model_dump())
     
     except NotificationPublishError as notification_error:
-        logger.error("[INTERFACE] Failed to publish notification to queue")
+        logger.error(f"[INTERFACE] Failed to publish notification to queue:{ notification_error}")
         return JSONResponse(
             status_code=500,
             content=ErrorResponse(detail="Failed to publish notification").model_dump())
