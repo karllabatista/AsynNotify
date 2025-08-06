@@ -15,7 +15,7 @@ class InMemoryRepository(UserRepository):
                     "contact_info":{
                         "email":"karllabatista19@gmail.com",
                         "sms":"+5592991353213",
-                        "prefered_channel":"email"
+                        "preferred_channel":"email"
                     }
                 },
                 "caiocrux":{
@@ -23,7 +23,7 @@ class InMemoryRepository(UserRepository):
                     "contact_info":{
                         "email":"caio.crux@gmail.com",
                         "sms":"+559292846992",
-                        "prefered_channel":"sms"
+                        "preferred_channel":"sms"
                     }  
                 }
             
@@ -50,7 +50,7 @@ class InMemoryRepository(UserRepository):
             return ContactInfo(
                 email = user_contact_info["email"],
                 sms = user_contact_info["sms"],
-                prefered_channel = user_contact_info["prefered_channel"]
+                preferred_channel = user_contact_info["preferred_channel"]
             )
         except UserNotFoundException:
             raise

@@ -4,8 +4,8 @@ class ContactInfoOutput(BaseModel):
 
     email: str
     sms: str
-    prefered_channel:str
+    preferred_channel:str
     
     @classmethod
     def from_entity(cls,contact:ContactInfo)-> "ContactInfoOutput":
-        return cls(email=contact.email, sms=contact.sms,prefered_channel=contact.prefered_channel)
+        return cls(email=contact.email, sms=contact.sms,preferred_channel=contact.preferred_channel)

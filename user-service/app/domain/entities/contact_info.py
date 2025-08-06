@@ -1,14 +1,14 @@
 class ContactInfo:
 
-    def __init__(self,email:str,sms:str,prefered_channel:str ):
+    def __init__(self,email:str,sms:str,preferred_channel:str ):
         self.email = email
         self.sms = sms
-        self.prefered_channel=prefered_channel
+        self.preferred_channel=preferred_channel
   
     def to_dict(self):
 
         return {
             "email":self.email,
             "sms":self.sms,
-            "prefered_channel":self.prefered_channel
+            "preferred_channel":self.preferred_channel
         }
