@@ -19,7 +19,7 @@ class UserServiceContactIndoRepository(UserContactInfoRepository):
         try:
         
             endpoint = f"{self.base_url}/users/{user_id}/contact-info"
-            result = requests.get(endpoint)
+            result = requests.get(endpoint,timeout=5)
 
             if result.status_code == 404:
                 raise UserNotFound ("User not found")
