@@ -1,0 +1,2 @@
+class EventBusErrorException(Exception):
+    pass

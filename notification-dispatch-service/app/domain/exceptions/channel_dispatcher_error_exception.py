@@ -1,0 +1,2 @@
+class ChannelDispatchErrorException(Exception):
+    pass
