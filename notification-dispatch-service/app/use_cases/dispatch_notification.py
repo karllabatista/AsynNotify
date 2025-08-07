@@ -14,21 +14,21 @@ class DispatchNotificationUseCase:
         self.channel_dispatcher= channel_dispatcher
 
     def execute(self)-> None:
-        logger.info("[DISPATCHE SERVICE] Try to process event")
+        logger.info("[DISPATCH SERVICE] Try to process event")
 
         try:
         
             # get event of queue
-            logger.info("[DISPATCHE SERVICE] Get event in notification queue ..")
+            logger.info("[DISPATCH SERVICE] Get event in notification queue ..")
             event = self.event_bus.consumer()
         except EventBusErrorException as event_error:
             logger.error(f"Failed consumer event: {event_error}")
             raise
 
         # parse event to notification
-        logger.info("[DISPATCHE SERVICE] Parsing event to notification ..")
+        logger.info("[DISPATCH SERVICE] Parsing event to notification ..")
         notification = self._parse_event_to_notification(event)
-        logger.info("[DISPATCHE SERVICE] is ready to dispatcher")
+        logger.info("[DISPATCH SERVICE] is ready to dispatcher")
         try:
             # redirect notification to specific channel
             self.channel_dispatcher(notification)
