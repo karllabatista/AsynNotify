@@ -1,5 +1,7 @@
 from domain.ports.event_bus.event_bus import EventBus
-QUEUE =""
+from config.env import get_queue
+
+QUEUE = get_queue()
 import json
 
 class RedisEventBus(EventBus):
