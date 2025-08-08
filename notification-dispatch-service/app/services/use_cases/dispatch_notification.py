@@ -32,7 +32,7 @@ class DispatchNotificationUseCase:
         return self._parse_event_to_notification(event)
 
 
-    def  _event_consumer(self)->dict:
+    def  _event_consumer(self)->dict: ## criar um serivco auxiliar?
 
         try:
 
