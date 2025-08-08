@@ -1,5 +1,5 @@
-from domain.entitites.notification import Notification
-from domain.exceptions.invalid_notification_event import InvalidNotificationEvent
+from src.domain.entitites.notification import Notification
+from src.domain.exceptions.invalid_notification_event import InvalidNotificationEvent
 import logging
 
 logger = logging.getLogger(__name__)

@@ -1,10 +1,10 @@
 
-from domain.ports.dispatchers.channel_dispatcher import ChannelDispatcher
-from domain.entitites.notification import Notification
+from src.domain.ports.dispatchers.channel_dispatcher import ChannelDispatcher
+from src.domain.entitites.notification import Notification
 
-from domain.exceptions.channel_dispatcher_error_exception import ChannelDispatchErrorException
-from application.services.event_consumer_service import EventConsumerService
-from application.services.notification_factory import NotificationFactory
+from src.domain.exceptions.channel_dispatcher_error_exception import ChannelDispatchErrorException
+from src.application.services.event_consumer_service import EventConsumerService
+from src.application.services.notification_factory import NotificationFactory
 import logging
 
 logger = logging.getLogger(__name__)

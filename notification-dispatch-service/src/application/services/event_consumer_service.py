@@ -1,5 +1,5 @@
-from domain.ports.event_bus.event_bus import EventBus
-from domain.exceptions.event_bus_error_exception import EventBusErrorException
+from src.domain.ports.event_bus.event_bus import EventBus
+from src.domain.exceptions.event_bus_error_exception import EventBusErrorException
 import logging
 logger = logging.getLogger(__name__)
 class EventConsumerService:

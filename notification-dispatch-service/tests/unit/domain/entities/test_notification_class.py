@@ -1,4 +1,4 @@
-from app.domain.entitites.notification import Notification
+from src.domain.entitites.notification import Notification
 import pytest
 def test_create_notification_instance():
     
