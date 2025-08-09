@@ -1,8 +1,8 @@
 from abc import ABC,abstractmethod
-from app.domain.entitites.notification import Notification
+from src.domain.entitites.notification import Notification
 class EventBus(ABC):
     
 
     @abstractmethod
-    def consumer(self) -> dict:
+    def consumer_event(self) -> dict:
         pass
