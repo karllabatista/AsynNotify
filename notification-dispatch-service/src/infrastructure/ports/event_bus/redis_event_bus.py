@@ -15,6 +15,7 @@ class RedisEventBus(EventBus):
           self.redis_client = redis_client
     
       def consumer(self) -> dict:
+            """Consume a single event from the Redis queue and return it as a dict."""
             try:
                 logger.info("Trying to get event in queue ..")
                 item = self.redis_client.blpop(QUEUE,timeout=0)
