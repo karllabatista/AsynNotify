@@ -19,7 +19,7 @@ def redis_client():
 def test_redis_event_bus_consumer_event(redis_client):
 
     # PUBLIC EVENT IN QUEUE
-    timeout = 10
+    timeout = 5
     queue = "notifications_test"
 
     event = {"type":"test","payload":"ok"}
