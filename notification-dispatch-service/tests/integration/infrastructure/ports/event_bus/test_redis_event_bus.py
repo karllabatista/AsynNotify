@@ -1,15 +1,26 @@
 from src.infrastructure.ports.event_bus.redis_event_bus import RedisEventBus
 import redis
 import json
-def test_redis_event_bus_consumer_event():
+import pytest
+
+@pytest.fixture
+def redis_client():
 
     # Arrange
 
-    redis_client =redis.Redis(host="localhost",port=6379,db=0)
+    client =redis.Redis(host="localhost",port=6379,db=0)
     queue = "notifications_test"
-    timeout = 10
+
+    client.delete(queue) # clear queue before test
+    yield client
+    client.delete(queue) # clear queue after test
+
+
+def test_redis_event_bus_consumer_event(redis_client):
 
     # PUBLIC EVENT IN QUEUE
+    timeout = 10
+    queue = "notifications_test"
 
     event = {"type":"test","payload":"ok"}
     redis_client.lpush(queue,json.dumps(event))
