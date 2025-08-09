@@ -6,7 +6,7 @@ def test_redis_event_bus_consumer_event():
     # Arrange
 
     redis_client =redis.Redis(host="localhost",port=6379,db=0)
-    queue = "notification"
+    queue = "notifications_test"
     timeout = 10
 
     # PUBLIC EVENT IN QUEUE
