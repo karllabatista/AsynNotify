@@ -4,22 +4,22 @@ from src.domain.exceptions.empty_queue_exception import EmptyQueueException
 from src.domain.exceptions.invalid_event_format_exception import InvalidEventFormatException
 import logging
 import json
-import redis
+import aioredis
 from typing import Optional
 logger = logging.getLogger(__name__)
 
 
 class RedisEventBus(EventBus):
       
-    def __init__(self,redis_client:redis.Redis,queue:str,timeout:Optional[int]):
+    def __init__(self,redis_client:aioredis.Redis,queue:str,timeout:Optional[int]):
           self.redis_client = redis_client
           self.queue = queue
           self.timeout = timeout
     
-    def consumer_event(self) -> dict:
+    async def consumer_event(self) -> dict:
         """Consume a single event from the Redis queue and return it as a dict."""
         
-        event = self._get_event_raw()
+        event = await self._get_event_raw_from_queue()
         return self._deserialize_event(event)
     
 
@@ -36,11 +36,12 @@ class RedisEventBus(EventBus):
             logger.exception("Invalid Json in queue")
             raise InvalidEventFormatException("Event is not valid JSON") from e
 
-    def _get_event_raw(self)->bytes:
+    async def _get_event_raw_from_queue(self)->bytes:
         """ Get event from queue if exists"""
         try:
             logger.info("Waiting for event from queue...")
-            item = self.redis_client.blpop(self.queue,self.timeout)
+            # BLPOP command async with timeout
+            item = await self.redis_client.blpop(self.queue,self.timeout)
 
             if not item:
                 logger.warning("No events in queue yet")
@@ -49,7 +50,7 @@ class RedisEventBus(EventBus):
             _, raw_event = item # it is a tuple -> (queuename,value)
             logger.debug(f"Raw event bytes: {raw_event}")  
             return raw_event
-        except redis.exceptions.ConnectionError as redis_error:
+        except aioredis.RedisError as redis_error:
             logger.exception("Redis connection failed")
             raise ServerUnavailable("Could not connect to Redis") from redis_error
         except EmptyQueueException:
