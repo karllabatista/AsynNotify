@@ -21,8 +21,8 @@ class DispatchNotificationUseCase:
         self.channel_dispatch= channel_dispatch
 
 
-    def execute(self):
+    async def execute(self):
         
-        event = self.event_consumer.consumer()
+        event = await self.event_consumer.consumer()
         notification = self.notification_factory.create_from_event(event)
-        self.channel_dispatch.dispatch(notification)
+        await self.channel_dispatch.dispatch(notification)
