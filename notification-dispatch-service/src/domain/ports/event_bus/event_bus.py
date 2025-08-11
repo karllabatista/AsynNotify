@@ -4,5 +4,5 @@ class EventBus(ABC):
     
 
     @abstractmethod
-    def consumer_event(self) -> dict:
+    async def consumer_event(self) -> dict:
         pass
