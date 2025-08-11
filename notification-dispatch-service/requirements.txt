@@ -4,3 +4,4 @@ pytest
 python-dotenv
 redis
 aioredis
+pytest-asyncio
