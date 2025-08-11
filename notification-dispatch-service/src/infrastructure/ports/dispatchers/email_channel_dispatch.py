@@ -20,12 +20,6 @@ class EmailChannelDispatch(ChannelDispatcher):
         try:
             
             content = self._create_content_email(notification)
-
-
-            # logger.info(f"Dispatching notification to {notification.channel} channel")
-            # logger.debug(f"Payload: {email_notification}")
-            # await asyncio.sleep(2) 
-            # logger.info(f"Notifcation sent to {notification.destination}")
             await self.service.send(content)
 
         except EmailDispatcherException as email_error:
