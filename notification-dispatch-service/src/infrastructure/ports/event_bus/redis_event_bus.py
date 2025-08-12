@@ -4,7 +4,7 @@ from src.domain.exceptions.empty_queue_exception import EmptyQueueException
 from src.domain.exceptions.invalid_event_format_exception import InvalidEventFormatException
 import logging
 import json
-import aioredis
+import redis.asyncio as aioredis
 from typing import Optional
 logger = logging.getLogger(__name__)
 
@@ -16,7 +16,7 @@ class RedisEventBus(EventBus):
           self.queue = queue
           self.timeout = timeout
     
-    async def consumer_event(self) -> dict:
+    async def consumer(self) -> dict:
         """Consume a single event from the Redis queue and return it as a dict."""
         
         event = await self._get_event_raw_from_queue()
