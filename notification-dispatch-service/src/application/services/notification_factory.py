@@ -7,6 +7,8 @@ class NotificationFactory:
 
 
   def create_from_event(self,event:dict)-> Notification: 
+        
+        logger.debug(f"event data :{event}")
 
         data = event.get("data")
 
