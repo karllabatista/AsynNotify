@@ -60,6 +60,7 @@ async def run_worker():
             await use_case.execute()
         except EmptyQueueException:
             logger.info("The queue is empty")
+            await asyncio.sleep(1)
 
         except Exception as e:
             logger.exception(f"Error to process: {e}")
