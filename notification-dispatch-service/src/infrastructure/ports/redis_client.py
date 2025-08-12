@@ -1,4 +1,4 @@
-import aioredis
+import redis.asyncio as aioredis
 from config.env import get_redis_host, get_redis_port
 
 async def get_redis_connection() -> aioredis.Redis:
