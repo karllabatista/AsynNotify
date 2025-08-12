@@ -8,6 +8,9 @@ from typing import Dict
 logger = logging.getLogger(__name__)
 class FakerEmailService(EmailService):
 
+    def __init__(self):
+        self.last_email = ""
+
 
     async def send(self, content:dict):
 
@@ -36,7 +39,9 @@ class FakerEmailService(EmailService):
             body = content.get('message') or ''
             msg.set_content(body)
 
-            logger.info(f"[FAKE EMAIL SERVICE SEND] EMAIL to: {msg['To']}")
+            logger.info(f"[FAKE EMAIL SERVICE SENT] EMAIL to: {msg['To']}")
+            self.last_email = {"destination":msg["To"]}
+
             logger.debug(f"Subject: {msg['Subject']}")
             logger.debug(f"Email content:\n{msg.as_string()}")
 
