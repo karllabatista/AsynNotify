@@ -15,6 +15,10 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 async def run_worker():
+    """
+    Executes a worker that consumes events from a queue, processes them into notifications,
+    and dispatches via specific channels (email, sms, etc).
+    """
     logger.info("Dispatch Notification Worker started. Listening queue...")
     
     QUEUE_NAME = get_queue()
@@ -63,4 +67,4 @@ async def run_worker():
     
     logger.info("Close connection with Redis...")
     await redis_client.close()
-    logger.info("Worker close with sucsess.")
+    logger.info("Worker close successfully.")
