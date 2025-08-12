@@ -8,6 +8,8 @@ from src.domain.exceptions.empty_queue_exception import EmptyQueueException
 import redis.asyncio as aioredis
 import asyncio
 import logging
+import signal
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -33,15 +35,32 @@ async def run_worker():
 
     use_case = DispatchNotificationUseCase(consumer,notification_factory,channel_dispatch)
     
+
+    # It allows you to make an asynchronous loop run until a “signal” is given.
+    # This “signal” is stop_event.set(), which you trigger when you want to stop the worker. 
+    stop_event = asyncio.Event()
+    def shutdown():
+        logger.info("Shutdown signal received. Stopping worker...")
+        stop_event.set()
+
+    # Registers a handler for the SIGINT signal (usually sent when pressing Ctrl+C),
+    # so that when this signal is received, the `shutdown` function is executed,
+    # allowing a controlled and graceful termination of the program.
+    loop = asyncio.get_running_loop()
+    loop.add_signal_handler(signal.SIGINT, shutdown) # ctrc+c
+    loop.add_signal_handler(signal.SIGTERM, shutdown) # kill
     
-    logger.info("Dispatch Notification Worker started. Listening queue...")
-    while True:
+    while not stop_event.is_set():
         try:
             # TODO BACKOFF OU LIMIT TRY
-                await use_case.execute()
+            await use_case.execute()
         except EmptyQueueException:
             logger.info("The queue is empty")
 
         except Exception as e:
-            logger.exception(f"Erro no processamento: {e}")
+            logger.exception(f"Error to process: {e}")
             await asyncio.sleep(1)  
+    
+    logger.info("Close connection with Redis...")
+    await redis_client.close()
+    logger.info("Worker close with sucsess.")
