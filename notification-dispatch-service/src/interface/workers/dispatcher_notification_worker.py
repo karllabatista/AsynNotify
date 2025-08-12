@@ -5,7 +5,8 @@ from src.infrastructure.ports.dispatchers.channel_dispatch_router import Channel
 from src.infrastructure.ports.dispatchers.email_channel_dispatch import EmailChannelDispatch
 from src.infrastructure.ports.services.faker_email_service import FakerEmailService
 from src.domain.exceptions.empty_queue_exception import EmptyQueueException
-import redis.asyncio as aioredis
+from src.infrastructure.ports.redis_client import get_redis_connection
+from config.env import get_queue
 import asyncio
 import logging
 import signal
@@ -16,10 +17,9 @@ logger = logging.getLogger(__name__)
 async def run_worker():
     logger.info("Dispatch Notification Worker started. Listening queue...")
     
-    QUEUE_NAME = "notifications"
-    redis_client = await aioredis.from_url("redis://localhost:6379",db=0,decode_responses=True)
+    QUEUE_NAME = get_queue()
+    redis_client = await get_redis_connection()
     consumer = RedisEventBus(redis_client,QUEUE_NAME,timeout=5)
-    
     # call notification object factory
     notification_factory = NotificationFactory()
 
