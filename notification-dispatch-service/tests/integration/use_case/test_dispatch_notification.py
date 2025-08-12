@@ -9,7 +9,7 @@ from src.infrastructure.ports.dispatchers.channel_dispatch_router import Channel
 from src.infrastructure.ports.dispatchers.email_channel_dispatch import EmailChannelDispatch
 from src.infrastructure.ports.services.faker_email_service import FakerEmailService
 from src.domain.exceptions.invalid_notification_event import InvalidNotificationEvent
-
+from src.domain.exceptions.channel_dispatcher_error_exception import ChannelDispatchErrorException
 
 QUEUE_NAME = "notificationd-test"
 
@@ -105,3 +105,43 @@ async def test_dispatch_notification_raises_data_key_missing(redis_client):
         await dispatch_use_case.execute()
 
     assert "Missing data key in event" in str(excinfo.value)    
+
+@pytest.mark.asyncio
+async def test_dispatch_notification_raises_invalid_channel(redis_client):
+    event ={
+            "event_type": "NotificationRequested",
+            "data":{
+                "user_id":"user.test",
+                "message":" this a test messafe",
+                "channel" :"test_channel",
+                "destination":"test@test.com"                 
+            },
+            "metadata":{
+                "timestamp":"",
+                "request_id": "ABCB-request"
+            }
+    }
+    await redis_client.lpush(QUEUE_NAME,json.dumps(event))
+
+    consumer = RedisEventBus(redis_client,QUEUE_NAME,timeout=5)
+  
+    # call notification object factory
+    notification_factory = NotificationFactory()
+
+    service = FakerEmailService()
+
+    dispatchers = {
+        "email":EmailChannelDispatch(service)
+        
+    }
+    channel_dispatch = ChannelDispatchRouter(dispatchers)
+
+    # ACT + ASSERT
+
+    with pytest.raises(ChannelDispatchErrorException) as  excinfo:
+        dispatch_use_case = DispatchNotificationUseCase(consumer,
+                                                    notification_factory,
+                                                    channel_dispatch)
+        # just checks if it doesn't throw an exception  
+        await dispatch_use_case.execute()
+    assert "Channel does not supported" in str(excinfo.value)    
