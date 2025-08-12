@@ -4,7 +4,7 @@ from src.domain.exceptions.email_channel_dispatch_error import EmailDispatcherEx
 from src.domain.ports.services.email_service import EmailService
 import logging
 import asyncio
-logger = logging.getLogger(logging.INFO)
+logger = logging.getLogger(__name__)
 
 class EmailChannelDispatch(ChannelDispatcher):
 
