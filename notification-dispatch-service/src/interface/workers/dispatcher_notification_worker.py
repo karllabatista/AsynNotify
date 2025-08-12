@@ -18,6 +18,30 @@ async def run_worker():
     """
     Executes a worker that consumes events from a queue, processes them into notifications,
     and dispatches via specific channels (email, sms, etc).
+
+    raises
+             
+        Handling forced worker termination.
+
+        This block captures two distinct interruption scenarios:
+
+        1. asyncio.CancelledError:
+        - Occurs when an asynchronous task is explicitly canceled
+        via `task.cancel()` or when the event loop is being
+        finalized.
+        - Catching this exception ensures that the worker can terminate
+        in a controlled manner, executing cleanup routines before exiting.
+
+        2. KeyboardInterrupt:
+        - Raised when the user presses Ctrl+C in the terminal,
+        sending an interrupt signal (SIGINT) to the process.
+        - Handling this case prevents abrupt termination,
+        allowing resources (such as Redis connections) to be released and
+        logging termination.
+
+        Both handlers aim to enable a graceful and predictable worker shutdown, even under cancellation
+        or manual interruption conditions.
+      
     """
     logger.info("Dispatch Notification Worker started. Listening queue...")
     
@@ -65,6 +89,9 @@ async def run_worker():
         except Exception as e:
             logger.exception(f"Error to process: {e}")
             await asyncio.sleep(1)  
+        except (asyncio.CancelledError, KeyboardInterrupt):
+            logger.info("Shutdown requested. Cleaning up...")
+            break
     
     logger.info("Close connection with Redis...")
     await redis_client.close()
