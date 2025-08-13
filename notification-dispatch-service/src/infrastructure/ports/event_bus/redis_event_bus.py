@@ -18,7 +18,7 @@ class RedisEventBus(EventBus):
     
     async def consumer(self) -> dict:
         """Consume a single event from the Redis queue and return it as a dict."""
-        
+      
         event = await self._get_event_raw_from_queue()
         return self._deserialize_event(event)
     
@@ -46,7 +46,7 @@ class RedisEventBus(EventBus):
             if not item:
                 logger.warning("No events in queue yet")
                 raise EmptyQueueException("No events in the notifications queue")
-            
+            logger.info("Consuming event of queue..")
             _, raw_event = item # it is a tuple -> (queuename,value)
             logger.debug(f"Raw event bytes: {raw_event}")  
             return raw_event
