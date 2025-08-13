@@ -12,7 +12,7 @@ class NotificationEvent:
         
         self.user_id= user_id
         self.message = message
-        self.channel= channel,
+        self.channel= channel
         self.destination = destination
         self.event_type = "NotificationRequested"
         self.request_id= request_id or str(uuid4())
