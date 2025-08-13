@@ -26,8 +26,10 @@ class PublishNotificationUseCase:
 
             if not user_contact:
                 raise UserNotFound("[PUBLISH SERVICE] User not found")
-            
-            destination = user_contact.preferred_channel
+
+            destination = user_contact.email
+           
+
         except UserNotFound:
             raise   
 
