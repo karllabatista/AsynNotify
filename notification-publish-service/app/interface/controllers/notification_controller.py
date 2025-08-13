@@ -48,7 +48,7 @@ def publish_notification(notification_input: NotificationInput,
         logger.info(f"Received notification request:user_id={notification_input.user_id},channel={notification_input.channel}")
         
         notification_req = NotificationRequest(user_id=notification_input.user_id,
-                                          channel=notification_input.channel,
+                                          channel=notification_input.channel.value,
                                           message=notification_input.message)
         
         notification_use_case.execute(notification_req)
