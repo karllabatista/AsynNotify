@@ -2,6 +2,9 @@ from typing import Dict
 from src.domain.ports.dispatchers.channel_dispatcher import ChannelDispatcher
 from src.domain.entitites.notification import Notification
 from src.domain.exceptions.channel_dispatcher_error_exception import ChannelDispatchErrorException
+import logging
+
+logger = logging.getLogger(__name__)
 class ChannelDispatchRouter(ChannelDispatcher):
 
     def __init__(self,dispatchers:Dict[str,ChannelDispatcher]):
@@ -12,7 +15,7 @@ class ChannelDispatchRouter(ChannelDispatcher):
         """
         Dispatch notification for a specific channel
         """
-       
+        logger.info(f"Dispatcher notification to specific channel")
        
         dispatch =  self.dispatchers.get(notification.channel)
 
