@@ -1,0 +1,15 @@
+services:
+  api-gateway:
+    build: 
+      context: ./api_gateway       # Pasta onde está o código e o Dockerfile
+      dockerfile: Dockerfile       # Nome do arquivo Dockerfile (padrão)
+    ports:
+      - "8000:8000"
+    environment:
+      BASE_URL_USER_SERVICE: "http://user-service:8000"
+  user-service:
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
+    expose:
+      - "8000" # só acessível internamente pelos outros containers
