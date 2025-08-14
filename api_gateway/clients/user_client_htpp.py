@@ -1,5 +1,5 @@
 import httpx
-class UserClient:
+class UserClientClientHTTPAsync:
 
     def __init__(self,base_url):
         
