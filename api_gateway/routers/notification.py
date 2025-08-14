@@ -1,10 +1,10 @@
 from fastapi import APIRouter,Request
-from clients.notification import Notification
+from api_gateway.clients.notification_client_http import NotificationClientHTTPAsync
 
 router = APIRouter()
 
 base_url ="http://127.0.0.1:8002" 
-notification_client = Notification(base_url)
+notification_client = NotificationClientHTTPAsync(base_url)
 
 @router.post("/notifications")
 async def  publish_notification_endpoint(req:Request):
