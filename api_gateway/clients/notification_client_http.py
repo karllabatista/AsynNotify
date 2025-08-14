@@ -1,6 +1,6 @@
 from fastapi import Request
 import httpx
-class Notification:
+class NotificationClientHTTPAsync:
 
     def __init__(self,base_url):
         self.base_url = base_url
