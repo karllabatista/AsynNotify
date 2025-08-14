@@ -1,6 +1,7 @@
 from fastapi import FastAPI
-from routers.users import router as router_user
-from routers.notification import router as router_notification
+
+from api_gateway.routers.users import router as router_user
+from api_gateway.routers.notification import router as router_notification
 
 app = FastAPI()
 
