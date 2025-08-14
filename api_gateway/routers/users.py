@@ -1,7 +1,8 @@
 from fastapi import APIRouter
 from api_gateway.clients.user_client_htpp import UserClientClientHTTPAsync
+from api_gateway.config.env import get_base_url_user_service
 
-base_url = "http://127.0.0.1:8001"
+base_url = get_base_url_user_service()
 router = APIRouter()
 user_client = UserClientClientHTTPAsync(base_url)
 

@@ -1,9 +1,9 @@
 from fastapi import APIRouter,Request
 from api_gateway.clients.notification_client_http import NotificationClientHTTPAsync
-
+from api_gateway.config.env import get_base_url_publish_notitication_service
 router = APIRouter()
 
-base_url ="http://127.0.0.1:8002" 
+base_url =get_base_url_publish_notitication_service() 
 notification_client = NotificationClientHTTPAsync(base_url)
 
 @router.post("/notifications")
