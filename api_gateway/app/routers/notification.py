@@ -1,6 +1,6 @@
 from fastapi import APIRouter,Request
-from api_gateway.clients.notification_client_http import NotificationClientHTTPAsync
-from api_gateway.config.env import get_base_url_publish_notitication_service
+from app.clients.notification_client_http import NotificationClientHTTPAsync
+from app.config.env import get_base_url_publish_notitication_service
 router = APIRouter()
 
 base_url =get_base_url_publish_notitication_service() 
