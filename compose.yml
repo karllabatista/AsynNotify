@@ -32,3 +32,14 @@ services:
       REDIS_HOST: notification_queue_redis
       REDIS_PORT: 6379
       BASE_URL_SERVICE_USER: "http://user-service:8000"
+  notification-dispatcher-service:
+    build:
+      context: ./notification-dispatch-service
+      dockerfile: Dockerfile
+    expose:
+      - "8000"
+    depends_on:
+      - notification_queue_redis
+    environment:
+      REDIS_HOST: notification_queue_redis
+      REDIS_PORT: 6379
