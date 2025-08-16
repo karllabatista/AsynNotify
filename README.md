@@ -143,6 +143,29 @@ It processes received events and directs notifications to specific channels, suc
 
 # How to run locally
 
+The project is executed using docker-compose. So  first it is necessary to have an installed docker in machine.
+
+After,
+
+1- Clone the repository:
+
+```
+git clone https://github.com/karllabatista/AsynNotify.git
+
+cd asyncnotify
+````
+2- Up the services
+
+````docker
+
+docker-compose up --build
+````
+3- Send a request:
+
+````script
+curl -X POST -d '{"user_id":"user_test","message": "your purchase was completed successfully"}' http://localhost:8000/notifications
+
+````
 # Notes
 
 # Improvements
