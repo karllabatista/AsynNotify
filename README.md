@@ -174,7 +174,7 @@ curl -X POST -d '{"user_id":"user_test","message": "your purchase was completed 
 
 --------------------------------------
 
-# (Futute) Improvements
+# (Future) Improvements
 
 - Orchestrate microservices using a cloud orchestrator such as Kubernetes, Amazon ECS, or similar solutions.
 
