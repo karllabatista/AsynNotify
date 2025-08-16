@@ -93,10 +93,18 @@ POST /notification: receive notication with:
 {
   "user_id": "123",
   "message": "Seu agendamento foi confirmado.",
-  "channel": "email"  // ou "sms", "push"
+  "channel": "email"  // or "sms"
 }
 ```
-O campo "channel" pode ser "email", "sms" ou "push".
+The field "channel" can be equal to "email"or "sms"
+
+Send request  by curl:
+```curl
+curl -X POST http://localhost:8000/notifications \
+-H "Content-Type: application/json" \
+-d '{"user_id":"testuser","message":"test message", "channel":"email"}'
+
+```
 ### user-service
 
 Responsible for sending user contact information to assist in sending notifications.
@@ -112,6 +120,12 @@ Returns:
     "preferred_channel":"email"
 }
 ```
+Send request  by curl:
+
+````curl
+curl http://localhost:8000/users/testuser/contact-info
+````
+
 ---------
 
 # Workers
