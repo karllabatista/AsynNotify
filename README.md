@@ -175,4 +175,18 @@ curl -X POST -d '{"user_id":"user_test","message": "your purchase was completed 
 
 --------------------------------------
 
-# Improvements
+# (Futute) Improvements
+
+- Orchestrate microservices using a cloud orchestrator such as Kubernetes, Amazon ECS, or similar solutions.
+
+- Enhance API Gateway with connection retries and failure handling when communicating with services.
+
+- Introduce a new message queue such as Apache Kafka or Amazon SQS/SNS to improve scalability and event-driven architecture.
+
+- Deploy the system to the cloud (preferably AWS) for more realistic production scenarios.
+
+- Implement fault recovery, idempotency, and resilience mechanisms to ensure reliable processing.
+
+- Expand automated test coverage to increase confidence and maintainability.
+
+- Integrate real sending providers (e.g. SMTP, SES, SendGrid)
