@@ -15,24 +15,23 @@ This project was developed with a focus on:
 
 # What I learned
 
-- **Clean Architecture**: separação clara de responsabilidades entre as camadas de domínio, aplicação, infraestrutura e interface, garantindo modularização, desacoplamento e boas práticas de código, incluindo princípios **SOLID**.
+- Clean Architecture: Clear separation of responsibilities between the domain, application, infrastructure, and interface layers, ensuring modularization, decoupling, and good coding practices, including SOLID principles.
 
+- Messaging with Redis: Use of Redis as a shared event queue between microservices.
 
-- **Mensageria com Redis**: uso do Redis como fila de eventos compartilhada entre microserviços.
+- Asynchronous Processing: Implementation of asynchronous tasks to process requests without blocking new requests or tasks.
 
-- **Processamento Assíncrono**: implementação de tarefas assíncronas para processar requisições sem bloquear novas requisições ou tarefas.
+- Communication between Microservices: Use of the HTTP protocol and message queues for direct and indirect communication between services.
 
-- **Comunicação entre Microserviços**: utilização de protocolo HTTP e fila de mensagens para comunicação direta e indireta entre serviços.
+- Event-Driven Architecture: Use of an event queue (notifications) to promote asynchronous processing between services.
 
-- **Event-Driven Architecture**: uso de fila de eventos (notificações) para promover processamento assíncrono entre serviços.
+- APIs with FastAPI: Creation of clear, high-performance endpoints with integrated documentation.
 
-- **APIs com FastAPI**: criação de endpoints claros, performáticos e com documentação integrada.
+- API Gateway: Creation of an API gateway so that clients do not connect directly to microservices and are redirected through it.
 
-- **API Gateway**: criacao de api gateway para que clientes nao se connectem diretamente aos micro servicos e por ser redirecionados por ele.
+- Logging: Implementation of logs to record and monitor system behavior.
 
-- **Logging**: implementação de logs para registrar e monitorar o comportamento do sistema.
-
-- **Dockerized Microservices**: containerização e orquestração local de serviços com Docker Compose.
+- Dockerized Microservices: Containerization and local orchestration of services with Docker Compose.
 
 --------------------------------------------------
 
