@@ -10,21 +10,13 @@ class InMemoryRepository(UserRepository):
     # Indexed by user_id
     USER_DB = {
             
-                "karlla":{ 
+                "testuser":{ 
                     
                     "contact_info":{
-                        "email":"karllabatista19@gmail.com",
-                        "sms":"+5592991353213",
+                        "email":"usertest@gmail.com",
+                        "sms":"+559999999999",
                         "preferred_channel":"email"
                     }
-                },
-                "caiocrux":{
-                  
-                    "contact_info":{
-                        "email":"caio.crux@gmail.com",
-                        "sms":"+559292846992",
-                        "preferred_channel":"sms"
-                    }  
                 }
             
         }
