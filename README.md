@@ -138,6 +138,8 @@ It processes received events and directs notifications to specific channels, suc
 
 - **Asynchronous Worker**: I created a dedicated worker for executing background tasks. Instead of being a full microservice, it acts as a specialized component for consuming the queue and processing events.
 
+**Orchestration with Docker Compose:** I used Docker Compose to orchestrate the application's services locally. This ensures a standardized environment, facilitates running multiple services in containers, and simplifies the development and testing process.
+
 
 # How to run locally
 
