@@ -166,6 +166,13 @@ docker-compose up --build
 curl -X POST -d '{"user_id":"user_test","message": "your purchase was completed successfully"}' http://localhost:8000/notifications
 
 ````
+--------------------------
 # Notes
+
+- The user service has an in-memory database. This means that existing users are present in these in-memory database.
+- The notification-dispatcher worker has a routing channel that directs notifications through specific channels. For this project and for an initial architecture, the notification sending services were called *Faker<channel>Service*. But the architecture has the possibility of adding a real email/SMS service.
+
+
+--------------------------------------
 
 # Improvements
