@@ -120,8 +120,27 @@ Returns:
 The system has a worker that acts as a listener to consume the message queue.
 It processes received events and directs notifications to specific channels, such as email, SMS, etc.
 
+-------
 
 # Design Choices
 
+- **Clean Architecture**: I adopted Clean Architecture to keep the code organized, with clear separation of responsibilities and loose coupling. This facilitates maintenance and the addition of new technologies without significantly impacting the core code.
+
+- **Redis**: I used Redis as an event queue to implement asynchronous processing between services. I chose Redis because it was a simple and efficient solution for the initial scope of the project, allowing for easy implementation and subsequent evolution to more robust tools, if necessary.
+
+- **Event-Driven Architecture**: I combined Clean Architecture with an event-driven approach, enabling services to process events asynchronously and decoupled.
+
+- **Asynchronous Programming**: I applied asynchronous programming to avoid API blocking and ensure higher performance when processing multiple concurrent tasks.
+
+- **FastAPI**: I chose FastAPI as the framework for building the APIs due to its performance, native support for data validation with Pydantic, and automatic generation of interactive documentation.
+
+- **Microservices**: I structured the system into two microservices, reinforcing decoupling and separation of responsibilities.
+
+- **Asynchronous Worker**: I created a dedicated worker for executing background tasks. Instead of being a full microservice, it acts as a specialized component for consuming the queue and processing events.
+
 
 # How to run locally
+
+# Notes
+
+# Improvements
