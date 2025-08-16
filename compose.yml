@@ -10,10 +10,8 @@ services:
       dockerfile: Dockerfile       # Dockerfile file name (default)
     ports:
       - "8000:8000"
-    environment:
-      BASE_URL_USER_SERVICE: "http://user-service:8000"
-      BASE_URL_PUBLISH_NOTIFICATION_SERVICE: "http://notification-publisher-service:8000"
-
+    env_file:
+      - .env
   user-service:
     build:
       context: ./user-service
@@ -28,10 +26,8 @@ services:
       - "8000"
     depends_on:
       - notification_queue_redis
-    environment:
-      REDIS_HOST: notification_queue_redis
-      REDIS_PORT: 6379
-      BASE_URL_SERVICE_USER: "http://user-service:8000"
+    env_file:
+      - .env
   notification-dispatcher-service:
     build:
       context: ./notification-dispatch-service
@@ -40,6 +36,5 @@ services:
       - "8000"
     depends_on:
       - notification_queue_redis
-    environment:
-      REDIS_HOST: notification_queue_redis
-      REDIS_PORT: 6379
+    env_file:
+      - .env
