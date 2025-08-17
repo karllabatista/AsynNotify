@@ -6,8 +6,6 @@ import logging
 
 logger = logging.getLogger(__name__)
 class SMSChannelDispatcher(ChannelDispatcher):
-    # TODO
-    # retries and fallback
 
     def __init__(self, service:SMSService):
         self.service = service
@@ -27,11 +25,19 @@ class SMSChannelDispatcher(ChannelDispatcher):
                 payload = self._create_payload_sms(notification)
                 
                 logger.info("[SMS-Dispatcher] Payload created for SMS Service")
-                result =  await  self.service.send(payload)
+                result =  await  self.service.send_to_provider(payload)
 
                 logger.info(f"[SMS-Dispatcher] Notification dispatched successfully: {result}") 
-                return result
-            
+                
+                # TODO
+                # retries
+                # registres failed,success
+                if result.get("status") == "sent":
+                    logger.info("[SMSChannelDispatcher] SMS sent with successfull")
+                else:
+                    logger.info("[SMSChannelDispatcher] error to send sms through provider")
+                
+                    
         except ChannelDispatchErrorException as e:
             logger.error(f"[SMS-Dispatcher] Channel dispatch error: {e}")
             raise
@@ -57,6 +63,6 @@ class SMSChannelDispatcher(ChannelDispatcher):
         logger.debug("[SMS-Dispatcher] Converting notification to SMS payload")
         return {
             "message": notification.message,
-            "destination": notification.destination  
+            "to": notification.destination  
 
         }
