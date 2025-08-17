@@ -3,5 +3,5 @@ from abc import ABC,abstractmethod
 class SMSService(ABC):
 
     @abstractmethod
-    async def send(sel,content:dict):
+    async def send_to_provider(sel,content:dict):
         pass
