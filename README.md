@@ -42,9 +42,9 @@ A first view of the Async Notifications is showed below:
 
 
 ![AsyncNotification Arquitecture](img/arch.png)
+
 **Explained the flow:**
 **1.** A client or service sends a request to create a notification to the API Gateway.
-
 **2**. The API Gateway forwards the request to the notification-publisher-service.
 **3.** The notification-publisher-service creates a notification event:
 
@@ -53,11 +53,8 @@ A first view of the Async Notifications is showed below:
   - Publishes the event to the notifications queue.
 
 **4.** The notification-dispatcher-worker consumes the events from the notifications queue.
-
 **5.** The dispatcher processes each event and converts it into a concrete notification.
-
 **6.** The notification is sent to the user through the specified channel (email, SMS, push, etc.).
-
 **7.** The user receives the notification.
 
 -----------------------------
