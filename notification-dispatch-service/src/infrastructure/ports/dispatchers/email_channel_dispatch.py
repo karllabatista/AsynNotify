@@ -26,7 +26,8 @@ class EmailChannelDispatch(ChannelDispatcher):
 
             if result.get("status") == "sent":
                 logger.info("[EMAILCHANNELDISPATCH]Email sent with success")
-
+            else:
+                logger.info("[EMAILCHANNELDISPATCH]Email sending failed")
         except EmailDispatcherException as email_error:
             logger.error("[EMAILCHANNELDISPATCH] Failed to dispatch notification", exc_info=email_error)
             raise
