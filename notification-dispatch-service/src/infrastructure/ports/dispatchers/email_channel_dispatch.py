@@ -22,7 +22,7 @@ class EmailChannelDispatch(ChannelDispatcher):
             content = self._create_content_email(notification)
             self._validate_email_content(content)
             
-            result = await self.service.send(content)
+            result = await self.service.send_to_provider(content)
 
             if result.get("status") == "sent":
                 logger.info("[EMAILCHANNELDISPATCH]Email sent with success")
