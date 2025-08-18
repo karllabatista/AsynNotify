@@ -141,11 +141,15 @@ curl http://localhost:8000/users/testuser/contact-info
 
 # Workers
 
-The system has a worker that acts as a listener to consume the message queue.
-It processes received events and directs notifications to specific channels, such as email, SMS, etc.
+The system includes a worker that listens to the message queue, processes incoming events, and routes notifications to specific channels such as Email and SMS.
 
+The worker is organized into two main submodules:
 
-## Consumer
+**DispatcherChannel**– responsible for transforming generic notifications into channel-specific formats and sending them via the corresponding provider.
+
+**Consumer** – responsible for consuming messages from the queue, validating events, and passing them to the dispatcher for delivery.
+
+The following sections describe each submodule in detail.
 
 ## DispatchChannel
 
