@@ -19,25 +19,25 @@ class SMSChannelDispatcher(ChannelDispatcher):
         try:
             logger.info(f"[SMS-Dispatcher] Start dispatcher notification to the {notification.channel}")
     
-            if self._validate_notification(notification):
+            self._validate_notification(notification)
                 
-                logger.info (f"[SMS-Dispatcher] Validate mandatory fields OK")
-                payload = self._create_payload_sms(notification)
-                
-                logger.info("[SMS-Dispatcher] Payload created for SMS Service")
-                result =  await  self.service.send_to_provider(payload)
+            logger.info (f"[SMS-Dispatcher] Validate mandatory fields OK")
+            payload = self._create_payload_sms(notification)
+            
+            logger.info("[SMS-Dispatcher] Payload created for SMS Service")
+            result =  await  self.service.send_to_provider(payload)
 
-                logger.info(f"[SMS-Dispatcher] Notification dispatched successfully: {result}") 
+            logger.info(f"[SMS-Dispatcher] Notification dispatched successfully: {result}") 
+            
+            # TODO
+            # retries
+            # registres failed,success
+            if result.get("status") == "sent":
+                logger.info("[SMSChannelDispatcher] SMS sent with successfull")
+            else:
+                logger.info("[SMSChannelDispatcher] error to send sms through provider")
+            
                 
-                # TODO
-                # retries
-                # registres failed,success
-                if result.get("status") == "sent":
-                    logger.info("[SMSChannelDispatcher] SMS sent with successfull")
-                else:
-                    logger.info("[SMSChannelDispatcher] error to send sms through provider")
-                
-                    
         except ChannelDispatchErrorException as e:
             logger.error(f"[SMS-Dispatcher] Channel dispatch error: {e}")
             raise
