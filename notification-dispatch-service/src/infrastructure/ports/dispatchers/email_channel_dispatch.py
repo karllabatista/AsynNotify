@@ -20,7 +20,12 @@ class EmailChannelDispatch(ChannelDispatcher):
         try:
             
             content = self._create_content_email(notification)
-            await self.service.send(content)
+            self._validate_email_content(content)
+            
+            result = await self.service.send(content)
+
+            if result.get("status") == "sent":
+                logger.info("[EMAILCHANNELDISPATCH]Email sent with success")
 
         except EmailDispatcherException as email_error:
             logger.error("[EMAILCHANNELDISPATCH] Failed to dispatch notification", exc_info=email_error)
@@ -35,9 +40,17 @@ class EmailChannelDispatch(ChannelDispatcher):
             raise ValueError("Notification must have message and destination")
 
         content = {
-                "message": notification.message,
-                "destination":notification.destination
+                "from":"no-reply@mysystem.com",
+                "to": notification.destination,
+                "subject":"New Notification",
+                "text_body":notification.message,
                 }
         return content
 
-        
+    
+    def _validate_email_content(self,content):
+
+        if "from" not in content or "to" not in content or \
+           "subject" not in content or "text_body" not in content:
+
+            raise ValueError("Mandatory field are missing")
