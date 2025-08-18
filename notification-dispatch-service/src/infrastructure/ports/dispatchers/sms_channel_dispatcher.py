@@ -53,8 +53,7 @@ class SMSChannelDispatcher(ChannelDispatcher):
         logger.debug("[SMS-Dispatcher] Validating mandatory fields...")
         if not notification.message or not notification.destination:
             raise ValueError(" Missing mandatory fields")
-        
-        return True
+
     
     def _create_payload_sms(self,notification:NotificationFactory):
         """
