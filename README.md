@@ -80,13 +80,14 @@ A first view of the Async Notifications is showed below:
 
 # Services
 
-The notification system consists of three main microservices:
+The notification system consists of two main microservices and one worker:
 
 **notification-publisher**: Receives a client message, converts it to an event, and publishes the event to a message queue.
 
+**user-service**: Provides user contact information to assist in sending notifications.
+
 **notification-dispatch**: Consumes events from the message queue, processes them, and forwards them to specific notification dispatch channels (email, SMS, push, etc.).
 
-**user-service**: Provides user contact information to assist in sending notifications.
 
 ----------------------------------------------------------------
 
@@ -142,6 +143,25 @@ curl http://localhost:8000/users/testuser/contact-info
 
 The system has a worker that acts as a listener to consume the message queue.
 It processes received events and directs notifications to specific channels, such as email, SMS, etc.
+
+
+## Consumer
+
+## DispatchChannel
+
+The DispatchChannel is responsible for receiving generic notifications and forwarding them to specific delivery channels.
+
+Each channel has its own dispatcher:
+
+- **SMSDispatchChannel:** converts the notification to SMS format and sends it via SMS service.
+
+- **EmailDispatchChannel**: converts the notification to email format and sends it via email service.
+
+This structure keeps the system decoupled, facilitates the addition of new channels, and ensures that each notification is delivered through the correct channel in a scalable manner.
+
+Flow of notificaiton inside the DispatchChanel:
+
+![DispatchChanel](img/dispatchcahnnel.png)
 
 -------
 
