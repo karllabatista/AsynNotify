@@ -3,7 +3,9 @@ from src.infrastructure.ports.event_bus.redis_event_bus import RedisEventBus
 from src.application.services.notification_factory import NotificationFactory
 from src.infrastructure.ports.dispatchers.channel_dispatch_router import ChannelDispatchRouter
 from src.infrastructure.ports.dispatchers.email_channel_dispatch import EmailChannelDispatch
+from src.infrastructure.ports.dispatchers.sms_channel_dispatcher import SMSChannelDispatcher
 from src.infrastructure.ports.services.faker_email_service import FakerEmailService
+from src.infrastructure.ports.services.fake_sms_service import FakeSMSService
 from src.domain.exceptions.empty_queue_exception import EmptyQueueException
 from src.infrastructure.ports.redis_client import get_redis_connection
 from config.env import get_queue
@@ -52,10 +54,11 @@ async def run_worker():
     notification_factory = NotificationFactory()
 
 
-    service = FakerEmailService()
-
+    email_service = FakerEmailService()
+    sms_service = FakeSMSService()
     dispatchers = {
-        "email":EmailChannelDispatch(service)
+        "email":EmailChannelDispatch(email_service),
+        "sms": SMSChannelDispatcher(sms_service)
         
     }
     channel_dispatch = ChannelDispatchRouter(dispatchers)
