@@ -4,3 +4,4 @@ pytest
 redis
 python-dotenv
 requests
+confluent-kafka
