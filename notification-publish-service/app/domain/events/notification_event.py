@@ -1,6 +1,5 @@
 from datetime import datetime,timezone
 from uuid import uuid4
-from app.domain.entities.notification_request import NotificationRequest
 class NotificationEvent:
     
     def __init__(self,
@@ -10,27 +9,27 @@ class NotificationEvent:
                  destination:str,
                  request_id:str = None):
         
+        self.event_id = str(uuid4())
+        self.event_type = "NotificationCreated"
+        self.timestamp = datetime.now(timezone.utc).isoformat() + "Z"
         self.user_id= user_id
         self.message = message
         self.channel= channel
-        self.destination = destination
-        self.event_type = "NotificationRequested"
+        self.destination = destination    
         self.request_id= request_id or str(uuid4())
-        self.metadata = {
-                        "timestamp":datetime.now(timezone.utc).isoformat() + "Z",
-                        "request_id":self.request_id
-                      }
 
     def to_dict(self):
         return{
+              "event_id" : self.event_id,
               "event_type": self.event_type,
-              "data":{
-                "user_id":self.user_id,
-                "message":self.message,
-                "channel" :self.channel,
-                "destination":self.destination                  
+              "timestamp":self.timestamp,
+              "payload":{
+                    "user_id":self.user_id,
+                    "message":self.message,
+                    "channel" :self.channel,
+                    "destination":self.destination                  
               },
-              "metadata":self.metadata
+              "request_id":self.request_id
                    
               }
       
