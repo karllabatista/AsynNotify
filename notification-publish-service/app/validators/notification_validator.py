@@ -6,6 +6,6 @@ class NotificationValidator:
       
         if not user_id or not message:
             return False
-        if channel not in VALID_CHANNELS:
+        if channel not in NotificationValidator.VALID_CHANNELS:
             return False
         return True
