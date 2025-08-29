@@ -27,7 +27,7 @@ class KafkaEventBus(EventBus):
             key = event.user_id
             payload= json.dumps(event.to_dict())
             self.producer.produce(TOPIC, key=key, value=payload,callback=self._delivery_report)
-            self.producer.flush()  # guarantee send
+            self.producer.flush(timeout=5)  # guarantee send
 
         except BufferError as error:
             logger.error(f"[Kafka Producer] buffer is full:{error}")
