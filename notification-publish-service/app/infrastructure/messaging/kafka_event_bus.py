@@ -1,5 +1,6 @@
 from app.domain.ports.event_bus import EventBus
 from app.domain.events.notification_event import NotificationEvent
+from app.domain.exceptions.event_bus_exceptions import EventBusPermanentError,EventBusTemporaryError,EventBusError
 from config.env import get_kafka_topic_name
 import json
 import logging
@@ -32,23 +33,19 @@ class KafkaEventBus(EventBus):
 
         except BufferError as error:
             logger.error(f"[Kafka Producer] buffer is full:{error}")
-            return False
+            raise EventBusTemporaryError("Kafka buffer full") from error
         
         except ValueError as error:
             logger.error(f"[Kafka Producer] Invalid payload! {error}")
-            return False
+            raise EventBusPermanentError("Invalid payload") from error
         
-        except ProduceError as error:
+        except (ProduceError,KafkaException) as error:
             logger.error(f"[Kafka Producer] Error to produce event:{error}")
-            return False
-        
-        except KafkaException as error:
-            logger.error(f"[Kafka Producer] Kakfka internal error:{error}")
-            return False
+            raise EventBusTemporaryError("Kafka internal error") from error
         
         except Exception as error:
             logger.error(f"[Kafka Producer] An error occurred when trying publish event:{error}")
-            return False
+            raise EventBusError("Unexpected error in KafkaEventBus") from error
     
     def _delivery_report(self,err,msg):
             """
