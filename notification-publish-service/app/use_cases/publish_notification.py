@@ -50,8 +50,18 @@ class PublishNotificationUseCase:
                                 )
         
         try:
+            # TODO Decide o que fazer se falhar:
+
+            # Retry com backoff
+
+            # Jogar em uma DLQ
+
+            # Registrar uma métrica de falha
+
+            # Retentar em outro broker (failover)
             success = self.event_bus.publish(event)
             if not success:
+
                 logger.error(f" Failed to publish notification")
                 raise NotificationPublishError("Failed to publish event")
          
