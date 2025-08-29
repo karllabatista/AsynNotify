@@ -16,7 +16,7 @@ class KafkaEventBus(EventBus):
         self.conf=  conf
         self.producer= producer
 
-    def publish(self,event:NotificationEvent)->bool:
+    def publish(self,event:NotificationEvent):
    
         """
         Publish a event in Kafka Broker
@@ -28,8 +28,6 @@ class KafkaEventBus(EventBus):
             payload= json.dumps(event.to_dict())
             self.producer.produce(TOPIC, key=key, value=payload,callback=self._delivery_report)
             self.producer.flush()  # guarantee send
-
-            return True
 
         except BufferError as error:
             logger.error(f"[Kafka Producer] buffer is full:{error}")
