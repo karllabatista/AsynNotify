@@ -19,10 +19,10 @@ def event():
 
 @pytest.fixture
 def event_bus():
-    conf = {"bootstrap.servers": "fake"}
+
     producer = MagicMock()
     
-    return KafkaEventBus(conf, producer)
+    return KafkaEventBus(producer)
     
   
 def test_publish_notification_in_broker_kafka_success(event,event_bus):
