@@ -3,8 +3,8 @@ from app.infrastructure.messaging.kafka_event_bus import KafkaEventBus,TOPIC
 import pytest
 from unittest.mock import MagicMock
 import json
-@pytest.fixture
 
+@pytest.fixture
 def event():
     return NotificationEvent(
         user_id="test-user",
@@ -12,17 +12,16 @@ def event():
         channel="email",
         destination="testuser@gmail.com"
     )
+
+@pytest.fixture
+def event_bus():
+    conf = {"bootstrap.servers": "fake"}
+    producer = MagicMock()
+    
+    return KafkaEventBus(conf, producer)
     
   
-def test_publish_notification_in_broker_kafka_success(event):
-
-    # arrange
-
-    conf = {'bootstrap.servers':"fake_host:9092"}
-
-    mock_producer = MagicMock()
-
-    event_bus = KafkaEventBus(conf,mock_producer)
+def test_publish_notification_in_broker_kafka_success(event,event_bus):
     
     # act 
   
@@ -33,12 +32,11 @@ def test_publish_notification_in_broker_kafka_success(event):
     key = event.user_id
     payload = json.dumps(event.to_dict())
 
-    mock_producer.produce.assert_called_once_with(
+    event_bus.producer.produce.assert_called_once_with(
         TOPIC,     
         key = key,
         value = payload,
         callback = event_bus._delivery_report
     )
 
-    
-    mock_producer.flush.assert_called_once_with(timeout=5)
+    event_bus.producer.flush.assert_called_once_with(timeout=5)
