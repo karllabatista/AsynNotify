@@ -19,3 +19,10 @@ def get_base_url_user_service():
 
 def get_kafka_topic_name():
     return os.getenv("TOPIC","notifications")
+
+def get_kafka_server():
+    return os.getenv("KAFKA_SERVER", "localhost")
+
+
+def get_kafka_port():
+    return os.getenv("KAFKA_PORT",9092)
