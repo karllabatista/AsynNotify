@@ -12,8 +12,8 @@ TOPIC = get_kafka_topic_name()
 
 class KafkaEventBus(EventBus):
     
-    def __init__(self,conf:dict,producer):
-        self.conf=  conf
+    def __init__(self,producer):
+        
         self.producer= producer
 
     def publish(self,event:NotificationEvent):
