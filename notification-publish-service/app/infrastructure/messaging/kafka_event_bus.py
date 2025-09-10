@@ -49,6 +49,15 @@ class KafkaEventBus(EventBus):
             """
             Send an ACK to confirm success or failed of delivery message
             """
+
+            # TODO
+
+            # CREATE SUCCESS OR FAILED METRICS TO REGISTER
+
+            # IMPLEMENTS RETRIES
+
+            # IMPLEMENTS DLQ
+
         
             if err is not None:
                 logger.error(f"Failed to deliver message: %s: %s" % (str(msg), str(err)))
