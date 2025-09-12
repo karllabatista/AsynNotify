@@ -5,14 +5,14 @@ from app.interface.schemas.notification_input import NotificationInput
 from app.interface.schemas.notification_response import NotificationResponse
 from app.interface.schemas.error_response import ErrorResponse
 from app.use_cases.publish_notification import PublishNotificationUseCase
-from app.domain.entities.notification_request import NotificationRequest
-from app.infrastructure.messaging.redis_event_bus import RedisEventBus
+from app.infrastructure.messaging.kafka_event_bus import KafkaEventBus
 from app.domain.exceptions.notification_publish_error import NotificationPublishError
 from app.domain.exceptions.server_unavailable_error import ServerUnavailable
-from app.infrastructure.redis_client import get_redis_connection
+from app.infrastructure.kafka_setup import create_producer
 from app.infrastructure.repositories.user_service_contact_info_repository import UserServiceContactInfoRepository
 from app.domain.exceptions.user_not_found_exception import UserNotFound
 from app.domain.exceptions.external_server_exception import ExternalServiceException
+from app.interface.schemas.notification_input import NotificationInput
 import logging
 from config.env import get_base_url_user_service
 
@@ -29,8 +29,10 @@ def hello_world():
     return {"message":"server is working .."}
 
 def get_publish_notification_use_case() -> PublishNotificationUseCase:
-    redis_client = get_redis_connection()
-    event_bus = RedisEventBus(redis_client)
+
+    producer = create_producer()
+
+    event_bus = KafkaEventBus(producer)
 
     user_contact_info_repository = UserServiceContactInfoRepository(BASE_URL)
     return PublishNotificationUseCase(event_bus,user_contact_info_repository)
@@ -47,11 +49,11 @@ def publish_notification(notification_input: NotificationInput,
     try:
         logger.info(f"Received notification request:user_id={notification_input.user_id},channel={notification_input.channel}")
         
-        notification_req = NotificationRequest(user_id=notification_input.user_id,
+        notification_input = NotificationInput(user_id=notification_input.user_id,
                                           channel=notification_input.channel.value,
                                           message=notification_input.message)
         
-        notification_use_case.execute(notification_req)
+        notification_use_case.execute(notification_input)
 
         return NotificationResponse(message="Notification sent successfully")
     except UserNotFound:
